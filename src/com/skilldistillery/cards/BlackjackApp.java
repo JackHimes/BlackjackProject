@@ -59,6 +59,7 @@ public class BlackjackApp {
 		boolean keepGameGoing = true;
 		boolean playerTurn = true;
 		boolean dealerTurn = true;
+		boolean endGameSummary = true;
 		while (keepGameGoing) {
 			if (user.calcHandValue() == 21) {
 				System.out.println("You got a Blackjack! Extra payout for you!");
@@ -82,8 +83,10 @@ public class BlackjackApp {
 					user.userGetValue();
 					if (user.calcHandValue() > 21) {
 						System.out.println("Your hand has gone bust! Dealer wins.");
-						playerTurn = false;
 						keepGameGoing = false;
+						playerTurn = false;
+						dealerTurn = false;
+						endGameSummary = false;
 						break;
 					}
 					if (user.calcHandValue() == 21) {
@@ -102,6 +105,7 @@ public class BlackjackApp {
 				default:
 					System.out.println("Please enter a valid input");
 				}
+				break;
 			}
 			while (dealerTurn) {
 				System.out.println("\nDealers Turn!");
@@ -110,6 +114,8 @@ public class BlackjackApp {
 				if (dealer.calcHandValue() > 21) {
 					System.out.println("Dealers hand has gone bust! You win!");
 					dealerTurn = false;
+					keepGameGoing = false;
+					endGameSummary = false;
 					break;
 				}
 				if (dealer.calcHandValue() == 21) {
@@ -118,39 +124,42 @@ public class BlackjackApp {
 						System.out.println("You and the dealer tied. Your bet has been returned.");
 						dealerTurn = false;
 						break;
-					}
-					else {
+					} else {
 						System.out.println("The dealer takes the pot!");
 						dealerTurn = false;
 						break;
 					}
 				}
-				if(dealer.calcHandValue() < 17) {
+				if (dealer.calcHandValue() < 17) {
 					System.out.println("Dealer hits");
 					dealer.dealerDealCard(dealer);
 					dealer.dealerDisplayHand();
 					dealer.dealerGetValue();
 					continue;
 				}
-				if(dealer.calcHandValue() > 16 && dealer.calcHandValue() <21) {
+				if (dealer.calcHandValue() > 16 && dealer.calcHandValue() < 21) {
 					System.out.println("Dealer stays with " + dealer.calcHandValue());
 					dealerTurn = false;
 					break;
 				}
-				
-			}
-			if (user.calcHandValue() > dealer.calcHandValue()) {
-				System.out.println("Your " + user.calcHandValue() + " beats the dealers " + dealer.calcHandValue()
-									+ "\nYou take the winnings!");
-				keepGameGoing = false;
-				
-			}else {
-				System.out.println("The dealers " + dealer.calcHandValue() + " beats your " + user.calcHandValue()
-									+ "\nHouse takes the winnings");
-				keepGameGoing = false;
-			}
-			
 
+			}
+			if (endGameSummary) {
+				if (user.calcHandValue() > dealer.calcHandValue()) {
+					System.out.println("Your " + user.calcHandValue() + " beats the dealers " + dealer.calcHandValue()
+							+ "\nYou take the winnings!");
+					keepGameGoing = false;
+
+				} else if (user.calcHandValue() == dealer.calcHandValue()) {
+					System.out.println("There is a tie! Your bet has been returned");
+				}
+				else {
+					System.out.println("The dealers " + dealer.calcHandValue() + " beats your " + user.calcHandValue()
+							+ "\nHouse takes the winnings");
+					keepGameGoing = false;
+				}
+
+			}
 		}
 	}
 }
