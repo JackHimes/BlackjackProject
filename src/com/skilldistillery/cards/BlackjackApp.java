@@ -25,6 +25,7 @@ public class BlackjackApp {
 	public void run(Dealer dealer, User user) {
 		initializeBlackjack(dealer, user);
 		playBlackjack(dealer, user);
+		System.out.println("\nThank you playing!");
 
 	}
 
@@ -131,6 +132,7 @@ public class BlackjackApp {
 					}
 				}
 				if (dealer.calcHandValue() < 17) {
+					System.out.println("");
 					System.out.println("Dealer hits");
 					dealer.dealerDealCard(dealer);
 					dealer.dealerDisplayHand();
